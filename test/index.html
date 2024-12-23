@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amount Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Amount Calculator</h1>
+        <div class="form-group">
+            <label for="slab">Select Slab Number:</label>
+            <input type="number" id="slab" min="1" max="110">
+        </div>
+        <div class="form-group">
+            <label for="clientType">Select Client Type:</label>
+            <select id="clientType">
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="paymentType">Select Payment Type:</label>
+            <select id="paymentType">
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="90">90</option>
+            </select>
+        </div>
+        <button onclick="calculateAmount()">Calculate Amount</button>
+        <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input type="text" id="amount" readonly>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for calculation
+        let data = [
+            { slab: 100, min_amount: 50, A: 10, B: 20, C: 30, '30': 5, '60': 10, '90': 15 },
+            // Add more data as needed
+        ];
+
+        function calculateAmount() {
+            const slabInput = parseInt(document.getElementById('slab').value);
+            const clientType = document.getElementById('clientType').value;
+            const paymentType = document.getElementById('paymentType').value;
+
+            const filterRow = data.find(row => parseInt(row.slab) === slabInput);
+            if (filterRow) {
+                const amount = parseFloat(filterRow.min_amount) + (parseFloat(filterRow[clientType]) || 0) + (parseFloat(filterRow[paymentType]) || 0);
+                document.getElementById('amount').value = amount;
+            } else {
+                document.getElementById('amount').value = "Specified slab value does not exist in data";
+            }
+        }
+    </script>
+</body>
+</html>

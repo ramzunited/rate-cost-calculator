@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rate Calculator</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        overflow: hidden;
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2f6f9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        width: 100%;
+        max-width: 450px;
+        text-align: center;
+        margin-top: -125px;
+        max-height: 100vh; /* Ensure the container doesn't exceed the viewport height */
+        overflow: hidden; /* Hide any overflowing content */
+      }
+
+      .logo {
+        width: 230px;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #11253a;
+        margin-bottom: 25px;
+        margin-top: -20px;
+      }
+
+      #greeting {
+        font-size: 18px;
+        color: #11253a;
+        margin-bottom: 30px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      label {
+        font-weight: 500;
+        color: #333;
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        margin-top: 5px;
+        font-size: 16px;
+        color: #333;
+        box-sizing: border-box; /* Ensures padding doesn't affect width */
+      }
+
+      select {
+        background-color: #fff;
+      }
+
+      button {
+        padding: 12px;
+        background-color: #11253a;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 8px;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #cc252a;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+      }
+
+      footer {
+        background-color: #11253a;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        font-size: 14px;
+      }
+
+      footer a {
+        color: #cc252a;
+        text-decoration: none;
+      }
+
+      .fab {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: #11253a;
+        color: white;
+        border-radius: 50%;
+        padding: 15px;
+        font-size: 24px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .fab:hover {
+        background-color: #cc252a;
+        transform: scale(1.1);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      @media screen and (max-width: 600px) {
+        .container {
+          padding: 20px;
+          width: 90%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Logo -->
+      <a href="index.html">
+        <img src="images/logo.png" alt="Company Logo" class="logo" />
+      </a>
+
+      <!-- Greeting Section -->
+      <h2 id="greeting"></h2>
+
+      <!-- Main Form -->
+      <h1>Rate Calculator</h1>
+      <div class="form-group">
+        <label for="rate">Enter Cost:</label>
+        <input
+          type="number"
+          id="rate"
+          min="1"
+          max="110"
+          placeholder="Enter cost"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="clientType">Select Client Type:</label>
+        <select id="clientType">
+          <option value="">-- Select --</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="paymentType">Select Payment Type:</label>
+        <select id="paymentType">
+          <option value="">-- Select --</option>
+        </select>
+      </div>
+
+      <!-- Calculate Button -->
+      <button onclick="calculateCost()">Calculate Rate</button>
+
+      <!-- Result -->
+      <div class="form-group">
+        <label for="cost">Rate:</label>
+        <input
+          type="text"
+          id="cost"
+          readonly
+          placeholder="Rate will be displayed here"
+        />
+      </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <a href="rate_calculator.html" class="fab">+</a>
+
+    <!-- Footer -->
+    <footer>
+      <p>
+        Contact us:
+        <a href="mailto:contact@ramzunited.com">contact@ramzunited.com</a>
+      </p>
+      <p>&copy; 2024 Company Name. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script>
+      let data = [];
+
+      function fetchData() {
+        Papa.parse("data.csv", {
+          download: true,
+          header: true,
+          complete: function (results) {
+            data = results.data;
+            populateDropdowns();
+            console.log("Data loaded:", data);
+          },
+          error: function (error) {
+            console.error("Error loading CSV:", error);
+          },
+        });
+      }
+
+      function populateDropdowns() {
+        const clientTypes = ["", "A", "B", "C"];
+        const paymentTypes = ["30", "60", "90"];
+
+        const clientSelect = document.getElementById("clientType");
+        const paymentSelect = document.getElementById("paymentType");
+
+        clientTypes.forEach((type) => {
+          const option = document.createElement("option");
+          option.value = type;
+          option.text = type || "-- Select --";
+          clientSelect.add(option);
+        });
+
+        paymentTypes.forEach((type) => {
+          const option = document.createElement("option");
+          option.value = type;
+          option.text = type || "-- Select --";
+          paymentSelect.add(option);
+        });
+      }
+
+      function calculateCost() {
+        const rateInput = parseInt(document.getElementById("rate").value);
+        const clientType = document.getElementById("clientType").value;
+        const paymentType = document.getElementById("paymentType").value;
+
+        const filterRow = data.find((row) => parseInt(row.slab) === rateInput);
+
+        if (filterRow) {
+          const minAmount = parseFloat(filterRow["min_amount"]) || 0;
+          const paymentValue = parseFloat(filterRow[paymentType]) || 0;
+          let clientValue = 0;
+
+          if (clientType) {
+            clientValue = parseFloat(filterRow[clientType]) || 0;
+          }
+
+          let cost = rateInput - minAmount;
+
+          if (clientType && paymentType) {
+            cost -= clientValue + paymentValue;
+          } else if (clientType && !paymentType) {
+            cost -= clientValue;
+          } else if (!clientType && paymentType) {
+            cost -= paymentValue;
+          }
+
+          if (!clientType && !paymentType) {
+            cost = rateInput - minAmount;
+          }
+
+          document.getElementById("cost").value = cost.toFixed(2);
+        } else {
+          document.getElementById("cost").value =
+            "Specified rate value does not exist in data";
+        }
+      }
+
+      fetchData();
+    </script>
+  </body>
+</html>

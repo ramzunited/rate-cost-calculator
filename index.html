@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - Rate/Cost Calculator</title>
+    <!-- Link to Google Fonts for the Roboto font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        overflow: hidden;
+        height: 100%;
+        margin: 0;
+      }
+
+      /* Apply the Roboto font to the entire website */
+      body {
+        display: flex;
+        flex-direction: column; /* Stack content vertically */
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: "Roboto", sans-serif; /* Apply the Roboto font */
+        margin: 0;
+        background-color: #f2f6f9; /* Set specific background color */
+      }
+
+      .container {
+        text-align: center;
+        margin-bottom: 100px; /* Space for footer */
+      }
+
+      /* Style for the logo */
+      .logo {
+        width: 200px; /* Adjust logo size */
+        margin-bottom: 30px; /* Space below logo */
+        margin-top: 10px;
+        margin-left: 10px;
+        opacity: 0;
+        animation: fadeIn 1s forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @media screen and (max-width: 600px) {
+        .container {
+          padding: 20px;
+          width: 90%;
+        }
+      }
+
+      /* For desktop: Logo positioned at the top-left corner */
+      @media (min-width: 768px) {
+        .logo {
+          position: absolute;
+          top: 20px;
+          left: 20px;
+          margin-bottom: 0; /* Remove bottom margin for desktop */
+        }
+      }
+
+      /* For mobile: Logo centered */
+      @media (max-width: 767px) {
+        h1 {
+          font-size: 28px;
+          margin-bottom: 40px; /* Adjust margin on small screens */
+        }
+      }
+
+      h1 {
+        font-size: 36px;
+        margin-bottom: 80px; /* Increased gap between heading and buttons */
+      }
+
+      .button-container {
+        display: flex; /* Align buttons horizontally */
+        gap: 20px; /* Space between buttons */
+        justify-content: center;
+      }
+
+      .button {
+        padding: 15px 30px;
+        font-size: 16px;
+        background-color: #11253a;
+        color: white;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        border-radius: 20px;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+      }
+
+      .button:hover {
+        background-color: #cc252a;
+        transform: scale(1.1); /* Slightly enlarges the button */
+      }
+
+      /* Floating Action Button (FAB) */
+      .fab {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #11253a;
+        color: white;
+        border-radius: 50%;
+        padding: 15px;
+        font-size: 24px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+      }
+
+      .fab:hover {
+        background-color: #cc252a;
+      }
+
+      /* Personalized Greeting */
+      #greeting {
+        font-size: 24px;
+        margin-bottom: 40px;
+        color: #11253a;
+      }
+
+      /* Footer */
+      footer {
+        background-color: #11253a;
+        color: white;
+        width: 100%;
+        padding: 10px;
+        text-align: center;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+
+      footer a {
+        color: #cc252a;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Add the company logo -->
+      <img src="images/logo.png" alt="Company Logo" class="logo" />
+
+      <!-- Personalized Greeting -->
+      <h2 id="greeting"></h2>
+
+      <h1>Calculate your Rate/Cost here!</h1>
+      <div class="button-container">
+        <a href="rate_calculator.html" class="button">Rate</a>
+        <a href="cost_calculator.html" class="button">Cost</a>
+      </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <a href="rate_calculator.html" class="fab">+</a>
+
+    <!-- Footer -->
+    <footer>
+      <p>
+        Contact us:
+        <a href="mailto:contact@ramzunited.com">contact@ramzunited.com</a>
+      </p>
+      <p>&copy; 2024 Company Name. All rights reserved.</p>
+    </footer>
+
+    <script>
+      // Personalized Greeting based on time of day
+      const greeting = document.getElementById("greeting");
+      const hours = new Date().getHours();
+
+      if (hours < 12) {
+        greeting.innerText = "Good Morning!";
+      } else if (hours < 18) {
+        greeting.innerText = "Good Afternoon!";
+      } else {
+        greeting.innerText = "Good Evening!";
+      }
+    </script>
+  </body>
+</html>
